@@ -3,11 +3,17 @@ var Socket = function () {
     var socket = io.connect(location.origin, {
         path: '/socket'
     });
-    this.InitNote = function (calendarId, callback) {
-        socket.emit('init note', {
-            cid:calendarId
-        }, function (isSuccess) {
-            callback(isSuccess);
+    this.GenerateNew = function (callback) {
+        socket.emit('generate new', {}, function (data) {
+            var name = data.name;
+            callback(name);
+        });
+    };
+    this.ValidateName = function (name, callback) {
+        socket.emit('validate name', {
+            name: name
+        }, function (data) {
+            callback(data);
         });
     };
 

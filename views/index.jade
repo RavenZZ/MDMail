@@ -2,16 +2,55 @@ doctype html
 html
     head
         title=title
+        link(href='/css/index.css?v=#{v}',type='text/css',rel="stylesheet")
+        link(href='/css/basic.css?v=#{v}',type='text/css',rel="stylesheet")
         script(src='/script/jquery-1.11.3.min.js',type='text/javascript')
         script(src='/script/index.js?v=#{v}',type='text/javascript')
         script(src='/socket/socket.io.js',type='text/javascript')
         script(src='/script/socket.js?v=#{v}',type='text/javascript')
         script(type='text/javascript').
-            var G={};
-            G.socket=null;
-            G.Relation ='#{relation.ename}';
+            var G = {};
+            G.socket = null;
+            G.Relation = '#{relation.ename}';
             $(function () {
                 G.socket = new Socket();
             });
     body
         div#container
+            div#Tip
+                h1 Bind to your account
+                div#Email
+                    input#mailName(type='text')
+                    img#refresh(src='/images/refresh.png',title='Generate new',alt='Generate new')
+                    span#domain #{domain}
+                div#mainDiv
+        div#yoyo
+            img(src='/images/postman.jpg')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

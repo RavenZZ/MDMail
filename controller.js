@@ -77,7 +77,8 @@ function AuthCallback(req, res, next) {
                         id: userObj.id,
                         name: userObj.name,
                         avatar: userObj.avatar,
-                        avatar100: userObj.avatar100
+                        avatar100: userObj.avatar100,
+                        email: userObj.email
                     };
                     var projectInfo = userObj.project;
                     req.session.project = {
@@ -111,13 +112,14 @@ function Index(req, res, next) {
                 }
             });
         }, function () {
-
             res.render('index.jade', {
                 v: '11',
                 title: 'mail',
                 uid: user.id,
                 uname: user.name,
-                relation: relation?relation.ename:''
+                email: user.email,
+                relation: relation ? relation.ename : '',
+                domain: config.mailDomain
             });
         }
     ], function (err) {
