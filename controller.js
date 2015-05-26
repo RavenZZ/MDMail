@@ -4,6 +4,8 @@ var mdapi = require('./mdapi');
 var ApiLoginUrl = mdapi.ApiLoginUrl;
 var async = require('async');
 require('date-util');
+var mongo = require('./lib/mongo');
+var db = new mongo();
 
 /*
  * if there is no session redirect to login
@@ -91,17 +93,37 @@ function AuthCallback(req, res, next) {
     ], function (err) {
         res.json({err: err});
     });
-
-
 }
 
 function Index(req, res, next) {
     var user = req.session.user;
-    res.render('index.jade', {
-        v: '11',
-        title: 'aaaa',
-        uid: user.id,
-        uname: user.name
+    var project = req.session.project;
+    var relation = {};
+    async.series([
+        function (done) {
+            db.getRelation(user.id, project.id, function (err, result) {
+                if (err) {
+                    done(result);
+                } else {
+                    relation = result;
+                    console.dir(result)
+                    done();
+                }
+            });
+        }, function () {
+
+            res.render('index.jade', {
+                v: '11',
+                title: 'mail',
+                uid: user.id,
+                uname: user.name,
+                relation: relation?relation.ename:''
+            });
+        }
+    ], function (err) {
+        res.json({
+            err: err
+        });
     });
     //res.json({
     //    token:req.session.token,
@@ -109,8 +131,6 @@ function Index(req, res, next) {
     //    project:req.session.project
     //})
 }
-
-
 
 
 exports.Index = Index;

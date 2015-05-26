@@ -12,6 +12,7 @@ var config = {
         port: 27017,
         database: 'notes'
     },
+    mailDomain:'@sender.mingdao.com',
     app: {
         appKey: 'CD1ACC391E4D',
         appSecret: 'AB94FA4498F289A789C39136E1819DF',
