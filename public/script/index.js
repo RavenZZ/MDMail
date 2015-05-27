@@ -10,13 +10,19 @@ $(function () {
             if (!result['err']) {
                 var isExists = result['exists'];
                 if (isExists) { //存在
-
+                    $('#btnBind').hide();
                 } else { // 不存在
-
+                    $('#btnBind').show();
                 }
             }
         });
     });
-
+    
+    $('#btnBind').on('click', function () {
+        var ename = $('#mailName').val();
+        G.socket.BindRelation(ename, function (result) {
+            alert(result);
+        });
+    });
 
 });

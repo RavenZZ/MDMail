@@ -27,7 +27,8 @@
     border-radius: 5px;
     height: 100px;
 }
-#refresh{
+
+#refresh {
     position: absolute;
     width: 25px;
     height: 25px;
@@ -35,7 +36,8 @@
     left: 232px;
     top: 58px;
 }
-#mailName{
+
+#mailName {
     line-height: 40px;
     height: 40px;
     padding-left: 10px;
@@ -50,12 +52,22 @@
     outline: 0;
 }
 
-#domain{
+#domain {
     font-weight: 800;
 }
 
-#yoyo{
+#yoyo {
     margin: 0 auto;
     text-align: center !important;
     background: #fdffeb;
+}
+
+#btnBind {
+    position: absolute;
+    left: 260px;
+    top: 100px;
+    width: 80px;
+    background: #e74c3c;
+    color: #fff;
+    cursor: pointer;
 }

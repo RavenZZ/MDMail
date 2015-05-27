@@ -17,6 +17,14 @@ var Socket = function () {
         });
     };
 
+    this.BindRelation = function (ename, callback) {
+        socket.emit('add relation', {
+            ename: ename
+        }, function (data) {
+            callback(data);
+        });
+    };
+
     socket.on('msg', function (data) {
 
     });

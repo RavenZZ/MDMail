@@ -107,7 +107,6 @@ function Index(req, res, next) {
                     done(result);
                 } else {
                     relation = result;
-                    console.dir(result)
                     done();
                 }
             });
