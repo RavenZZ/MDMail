@@ -1,4 +1,4 @@
-var Socket = function () {
+var Socket = function (onConnect) {
     var _this = this;
     var socket = io.connect(location.origin, {
         path: '/socket'
@@ -25,7 +25,12 @@ var Socket = function () {
         });
     };
 
-    socket.on('msg', function (data) {
-
+    this.GetMails = function (pageIndex,callback) {
+        socket.emit('mails',{i:pageIndex}, function (mails) {
+            callback(mails);
+        });
+    };
+    socket.on('connect', function () {
+        onConnect();
     });
 };

@@ -1,1 +1,20 @@
+doctype html
+html
+    head
+        title=title
+        link(href='/css/mails.css?v=#{v}',type='text/css',rel="stylesheet")
+        link(href='/css/basic.css?v=#{v}',type='text/css',rel="stylesheet")
+        script(src='/script/jquery-1.11.3.min.js',type='text/javascript')
+        script(src='/script/mails.js?v=#{v}',type='text/javascript')
+        script(src='/socket/socket.io.js',type='text/javascript')
+        script(src='/script/socket.js?v=#{v}',type='text/javascript')
+        script(type='text/javascript').
+            var G = {};
+            G.socket = null;
+            G.Relation = '#{ename}';
+    body
+        div#Container
+            div#Mails
+
+
 

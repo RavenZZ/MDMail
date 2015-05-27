@@ -11,9 +11,11 @@ html
         script(type='text/javascript').
             var G = {};
             G.socket = null;
-            G.Relation = '#{relation.ename}';
+            G.Relation = '#{ename}';
             $(function () {
-                G.socket = new Socket();
+                G.socket = new Socket(function () {
+                    console.log('connected');
+                });
             });
     body
         div#container

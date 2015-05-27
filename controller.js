@@ -111,15 +111,27 @@ function Index(req, res, next) {
                 }
             });
         }, function () {
-            res.render('index.jade', {
-                v: '11',
-                title: 'mail',
-                uid: user.id,
-                uname: user.name,
-                email: user.email,
-                relation: relation ? relation.ename : '',
-                domain: config.mailDomain
-            });
+            if (relation == null) {
+                res.render('index.jade', {
+                    v: '11',
+                    title: 'mail',
+                    uid: user.id,
+                    uname: user.name,
+                    email: user.email,
+                    relation: relation ? relation.ename : '',
+                    domain: config.mailDomain
+                });
+            } else {
+                res.render('mails.jade', {
+                    v: '11',
+                    title: 'My Inbox',
+                    uid: user.id,
+                    uname: user.name,
+                    ename: relation.ename,
+                    domain: config.mailDomain
+                });
+            }
+
         }
     ], function (err) {
         res.json({
