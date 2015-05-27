@@ -2,11 +2,21 @@ var config = require('./configuration');
 var controller = require('./controller');
 var express = require('express');
 var RedisStore = require('connect-redis')(express);
-var redis = require('redis');
 
+var redis = require('redis');
+var cookie = require('express/node_modules/cookie');
 var redisConfig = config.redis;
 var redisClient = redis.createClient(redisConfig.port, redisConfig.host);
 
+var sessionPrefix = 'ravenHeHe';
+
+var store = new RedisStore({
+    host: redisConfig.host,
+    port: redisConfig.port,
+    client: redisClient,
+    prefix: sessionPrefix,
+    maxAge: 14400000
+});
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server, {
@@ -24,13 +34,7 @@ app.configure(function () {
     app.use(express.static(__dirname + '/public'));
     app.use(express.session({
         secret: "ravenHaha",
-        store: new RedisStore({
-            host: redisConfig.host,
-            port: redisConfig.port,
-            client: redisClient,
-            prefix: 'ravenHeHe',
-            maxAge: 14400000
-        })
+        store: store
     }));
 });
 
@@ -41,6 +45,24 @@ app.get('/', controller.CheckAuth, controller.Index);
 app.get('/index', controller.CheckAuth, controller.Index);
 app.get('/login', controller.Login);
 app.get('/authorize_callback', controller.AuthCallback);
+
+
+io.use(function (socket, next) {
+    var handshakeData = socket.request;
+    if (handshakeData.headers.cookie) {
+        var cookies = cookie.parse(handshakeData.headers.cookie);
+        var connectId = cookies['connect.sid'].substring(2);
+        var indexOfDot = connectId.lastIndexOf('.');
+        connectId = connectId.substring(0, indexOfDot);
+        console.log('connect.sdi', connectId);
+        var fn = store.get(connectId, function (err, result) {
+            var user = result;
+            socket.UserID = result.user.id;
+            socket.ProjectID = result.project.id;
+            next();
+        });
+    }
+});
 
 
 server.listen(app.get('port'));
