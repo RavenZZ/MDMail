@@ -24,7 +24,8 @@ mailin.start({
     port: 25,
     disableWebhook: true, // Disable the webhook posting.
     logFile:'/usr/local/mailtest/log.txt',
-    logLevel:'warn'
+    logLevel:'warn',
+    disableSpamScore:true // ½ûÓÃSpam
 });
 
 /* Access simplesmtp server instance. */

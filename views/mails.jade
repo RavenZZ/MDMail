@@ -10,11 +10,22 @@ html
         script(src='/script/socket.js?v=#{v}',type='text/javascript')
         script(type='text/javascript').
             var G = {};
+            G.Title = '#{title}';
+            G.unread = 0;
             G.socket = null;
             G.Relation = '#{ename}';
     body
         div#Container
             div#Mails
-
+                div#newMsgTip.Hidden
+                    span.newMsgText 新邮件
+                div#template.mailItem.Hidden
+                    div.from
+                        span.fromName Raven
+                        a.fromMail(href='mailto:zhuyingjunjun@foxmail.com') zhuyingjunjun@foxmail.com
+                    div.subject
+                        p.subjectText 一个主题
+                    div.textBody
+                        p.text 一篇文章一篇文章一篇文章一篇文章一篇文章一篇文章一篇文章一篇文章一篇文章一篇文章一篇文章一篇文章
 
 

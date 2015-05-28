@@ -36,9 +36,10 @@ var Socket = function (onConnect, onNewMailin) {
     });
     setTimeout(function () {
         onNewMailin({
-            subject:'SubjectText'
+            subject:'SubjectText',
+            from:'zhuyingjunjun@foxmail.com'
         });
-    },10000);
+    },3000);
     socket.on('connect', function () {
         onConnect();
     });
