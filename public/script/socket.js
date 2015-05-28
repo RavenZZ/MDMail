@@ -1,4 +1,4 @@
-var Socket = function (onConnect) {
+var Socket = function (onConnect, onNewMailin) {
     var _this = this;
     var socket = io.connect(location.origin, {
         path: '/socket'
@@ -25,11 +25,20 @@ var Socket = function (onConnect) {
         });
     };
 
-    this.GetMails = function (pageIndex,callback) {
-        socket.emit('mails',{i:pageIndex}, function (mails) {
+    this.GetMails = function (pageIndex, callback) {
+        socket.emit('mails', {i: pageIndex}, function (mails) {
             callback(mails);
         });
     };
+
+    socket.on('new mail', function (mailData) {
+        onNewMailin(mailData);
+    });
+    setTimeout(function () {
+        onNewMailin({
+            subject:'SubjectText'
+        });
+    },10000);
     socket.on('connect', function () {
         onConnect();
     });

@@ -12,23 +12,23 @@ html
             var G = {};
             G.socket = null;
             G.Relation = '#{ename}';
+            G.domain = '#{domain}';
             $(function () {
                 G.socket = new Socket(function () {
                     console.log('connected');
-                });
+                }, onNewMail);
             });
     body
         div#container
             div#Tip
-                h1 Bind to your account
+                h1#TipTitle 创建您的明道邮箱
                 div#Email
-                    input#mailName(type='text')
-                    img#refresh(src='/images/refresh.png',title='Generate new',alt='Generate new')
-                    span#domain #{domain}
-                    span#btnBind Bind
-                div#mainDiv
-        div#yoyo
-            img(src='/images/postman.jpg')
+                    input#mailName.c(type='text')
+                    img#refresh.c(src='/images/refresh.png',title='Generate new',alt='Generate new')
+                    span#domain.c #{domain}
+                    span#btnBind.c Go
+                    span#myMail.Hidden poppy.mu@sender.mingdao.com
+                    span#btnGo.Hidden Mail List
 
 
 

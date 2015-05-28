@@ -31,11 +31,26 @@ $(function () {
             }
         });
     });
-    
+
     $('#btnBind').on('click', function () {
         var ename = $('#mailName').val();
+        $('.c').hide();
         G.socket.BindRelation(ename, function (result) {
-            alert(result);
+            showTipMessage(ename);
         });
     });
 });
+
+var showTipMessage = function (ename) {
+    $('#TipTitle').text('Now Send an email to:');
+    $('#myMail').text(ename + G.domain).show();
+};
+
+var onNewMail = function (mailData) {
+    $('#btnGo').show().on('click', function () {
+        location.reload();
+    });
+    $('#myMail').text('Yeah~ Success! Subject is ' + mailData.subject);
+};
+
+
