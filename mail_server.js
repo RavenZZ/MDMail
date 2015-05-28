@@ -3,6 +3,9 @@ var mailin = require('mailin');
 var mongo = require('./lib/mongo');
 var db = new mongo();
 var async = require('async');
+var redis = require('redis');
+var redisConfig = config.redis;
+var redisClient = redis.createClient(redisConfig.port, redisConfig.host);
 
 /* Start the Mailin server. The available options are:
  *  options = {
@@ -93,6 +96,10 @@ mailin.on('message', function (connection, data, content) {
         async.eachSeries(bindedMails, function (mObj, next) {
             var to = mObj.to.address;
             var uid = mObj.uid;
+            m.to = to;
+            m.uid = uid;
+            redisClient.publish('newmail', JSON.stringify(m));
+
             db.addMail(m.from, m.fromNickname, to, uid, m.subject, m.mail, function (addError, result) {
                 next();
             });

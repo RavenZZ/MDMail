@@ -7,7 +7,7 @@ var redis = require('redis');
 var cookie = require('express/node_modules/cookie');
 var redisConfig = config.redis;
 var redisClient = redis.createClient(redisConfig.port, redisConfig.host);
-
+var redisClient2 =  redis.createClient(redisConfig.port, redisConfig.host);
 var sessionPrefix = 'ravenHeHe';
 
 var store = new RedisStore({
@@ -61,6 +61,21 @@ io.use(function (socket, next) {
             socket.ProjectID = result.project.id;
             next();
         });
+    }
+});
+
+redisClient2.subscribe('newmail');
+
+redisClient2.on('message', function (channel, data) {
+    var message = null;
+    try {
+        message = JSON.parse(data);
+    } catch (e) {
+        message = null;
+    }
+    if (channel == 'newmail') {
+        console.dir(data);
+        io.to(message.uid).emit('new mail', data);
     }
 });
 
