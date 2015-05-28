@@ -1,4 +1,8 @@
+var config = require('./configuration');
 var mailin = require('mailin');
+var mongo = require('./lib/mongo');
+var db = new mongo();
+var async = require('async');
 
 /* Start the Mailin server. The available options are:
  *  options = {
@@ -39,12 +43,65 @@ mailin.on('startMessage', function (connection) {
      authentication: { username: null, authenticated: false, status: 'NORMAL' }
      }
      }; */
-    console.log(connection);
+    //console.log(connection);
 });
 
 /* Event emitted after a message was received and parsed. */
 mailin.on('message', function (connection, data, content) {
-    console.log(data);
+    var toMails = data.to;
+    var okMailArray = [];
+    toMails.forEach(function (m) {
+        if (m && m.address) {
+            var add = m.address;
+            var mDoamin = add.substring(add.lastIndexOf('@'));
+            if (mDoamin == config.mailDomain) {
+                okMailArray.push(m);
+            }
+        }
+    });
+
+    var bindedMails = [];
+
+    async.eachSeries(okMailArray, function (m, next) {
+        db.getRelationByMail(m.address, function (err, relation) {
+            if (!err && relation) {
+                var mailItem = {
+                    to: m,
+                    uid: relation.uid
+                };
+                bindedMails.push(mailItem);
+            }
+            next();
+        });
+    }, function (err) {
+        console.log('binded mails');
+        console.dir(bindedMails);
+        var from = data.from[0];
+        var m = {
+            from: from.address,
+            fromNickname: from.name,
+            to: '',
+            uid: '',
+            subject: data.subject,
+            time: new Date(),
+            mail: {
+                html: data.html,
+                text: data.text,
+                attachments: data.attachments
+            }
+        };
+        async.eachSeries(bindedMails, function (mObj, next) {
+            var to = mObj.to.address;
+            var uid = mObj.uid;
+            db.addMail(m.from, m.fromNickname, to, uid, m.subject, m.mail, function (addError, result) {
+                next();
+            });
+        }, function (error) {
+            console.log('add Success');
+        });
+    });
+
+    //console.log(data);
     /* Do something useful with the parsed message here.
      * Use parsed message `data` directly or use raw message `content`. */
 });
