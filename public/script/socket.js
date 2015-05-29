@@ -34,12 +34,12 @@ var Socket = function (onConnect, onNewMailin) {
     socket.on('new mail', function (mailData) {
         onNewMailin(mailData);
     });
-    setTimeout(function () {
-        onNewMailin({
-            subject:'SubjectText',
-            from:'zhuyingjunjun@foxmail.com'
-        });
-    },3000);
+    //setTimeout(function () {
+    //    onNewMailin({
+    //        subject:'SubjectText',
+    //        from:'zhuyingjunjun@foxmail.com'
+    //    });
+    //},3000);
     socket.on('connect', function () {
         onConnect();
     });

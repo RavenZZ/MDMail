@@ -7,6 +7,7 @@ $(function () {
     }, function (mailData) {
         $('#newMsgTip').show();
         G.unread += 1;
+        console.dir(mailData);
         notifyMe(mailData);
     });
 
@@ -39,6 +40,7 @@ var generateItem = function (i, mailsList) {
         var mailObj = $('#template').clone().attr("id", "");
         mailObj.find('.fromName').text(mailItem.fromNickname);
         mailObj.find('.fromMail').text(mailItem.from).attr('href', mailItem.from);
+        mailObj.find('.subjectText').text(mailItem.subject);
         mailObj.find('.text').text(mailItem.mail.text);
 
         $('#Mails').append(mailObj);

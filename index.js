@@ -75,7 +75,7 @@ redisClient2.on('message', function (channel, data) {
     }
     if (channel == 'newmail') {
         console.dir(data);
-        io.to(message.uid).emit('new mail', data);
+        io.to(message.uid).emit('new mail', message);
     }
 });
 
