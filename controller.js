@@ -114,7 +114,7 @@ function Index(req, res, next) {
             if (relation == null) {
                 res.render('index.jade', {
                     v: '11',
-                    title: 'mail',
+                    title: 'M-Smarter',
                     uid: user.id,
                     uname: user.name,
                     email: user.email,
@@ -124,7 +124,7 @@ function Index(req, res, next) {
             } else {
                 res.render('mails.jade', {
                     v: '11',
-                    title: 'My Inbox',
+                    title: 'M-Smarter',
                     uid: user.id,
                     uname: user.name,
                     ename: relation.ename,
